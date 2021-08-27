@@ -37,7 +37,7 @@ function optionChanged() {
 };
 
 // Write out showTable function to show the demographics for each newName
-function buildPlot() {
+function buildPlot(subject) {
 
     // Fetch JSON again
     samplejson.then((data) => {
@@ -73,11 +73,11 @@ function buildPlot() {
 
         // Var for bar chart details
         var barCharttrace = {
-            x: filteredsamples.sample_values.slice(0,10),
-            y: filteredsamples.otu_ids.slice(0,10),
+            x: filteredsamples.sample_values.slice(0,10).reverse(),
+            y: filteredsamples.otu_ids.slice(0,10).map(otuid => `OTU ${otuid}`).reverse(),
             type: "bar",
             orientation: "h",
-            text:  filteredsamples.otu_labels.slice(0,10)
+            text:  filteredsamples.otu_labels.slice(0,10).reverse()
         };
 
         var barChartlayout = {
@@ -85,6 +85,8 @@ function buildPlot() {
             yaxis: {title:"OTU ID"},
             xaxis: {title: "Bacterial Count/Frequency"}
         };
+
+        Plotly.newPlot("bar", [barCharttrace], barChartlayout);
 
         // Var for bubble chart details
         var bubbleCharttrace ={
@@ -104,7 +106,6 @@ function buildPlot() {
             showlegend: false
         };
 
-        Plotly.newPLot("bar", [barCharttrace], barChartlayout);
         Plotly.newPlot("bubble", [bubbleCharttrace], bubbleChartlayout);
 
     });
