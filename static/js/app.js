@@ -1,3 +1,7 @@
+// //////////////////////////////////
+//  STEP 1 // CREATING INITIAL VAR'S
+// //////////////////////////////////
+
 // Var for the select element (dropdown menu)
 var seldataset = d3.select("#selDataset");
 
@@ -10,8 +14,16 @@ var barChart = d3.select("#bar");
 // Var for selecting bubble chart
 var bubbleChart = d3.select("#bubble");
 
+// Bonus: Var for selecting gauge chart;
+var guageChart = d3.select("#gauge")
+
 // Var for selecting samples.json
 var samplejson = d3.json("samples.json");
+
+
+// ///////////////////////
+// STEP 2 // DROPDOWNMENU
+// ///////////////////////
 
 // Populating dropdownMenu
 function init() {
@@ -29,6 +41,10 @@ function init() {
 
 // initialize dropdownMenu
 init();
+
+// /////////////////////////////
+// STEP 3 // BUILDING THE PLOTS
+// /////////////////////////////
 
 // Using optionChanged function to update graph when new id/name is selected
 function optionChanged() {
@@ -107,6 +123,37 @@ function buildPlot(subject) {
         };
 
         Plotly.newPlot("bubble", [bubbleCharttrace], bubbleChartlayout);
+
+        // Var for gauge chart
+        var guageCharttrace = {
+            type: "indicator",
+            mode: "gauge+number+delta",
+            value: filteredsamples.wfreq,
+            title: { text: "Wash Frequency of Chosen Subject's Belly Button", font: { size: 24, color: "black", family: "Arial" } },
+            delta: { reference: 400, increasing: { color: "RebeccaPurple" } },
+            gauge: {
+              axis: { range: [null, 9], tickwidth: 1, tickcolor: "black" },
+              bar: { color: "darkblue" },
+              bgcolor: "white",
+              borderwidth: 2,
+              bordercolor: "gray",
+              steps: [
+                { range: [0, 1], color: "red" },
+                { range: [1, 2], color: "orange" },
+                { range: [2, 3], color: "lightorange" },
+                { range: [3, 4], color: "yellow" },
+                { range: [4, 5], color: "lightgreen" },
+                { range: [5, 6], color: "green" },
+                { range: [6, 7], color: "royalblue" },
+                { range: [7, 8], color: "indigo" },
+                { range: [8, 9], color: "violet" },
+              ],
+            }
+        };
+
+        var guageChartlayout = { width: 600, height: 450, margin: { t: 0, b: 0 } };
+
+        Plotly.newPlot("gauge", [guageCharttrace], guageChartlayout);
 
     });
 };
